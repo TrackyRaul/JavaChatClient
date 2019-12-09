@@ -28,9 +28,12 @@ public class ClientWriter implements Runnable {
 
     @Override
     public void run() {
+        Interpreter interpreter = new Interpreter();
+        // Check if authenticated
         while (!Main.authenticated) {
             System.out.print("Insert username: ");
             String tempUsername = stdIn.nextLine();
+            // Send auth message
             out.println("Head: " + tempUsername.trim());
             try {
                 Thread.sleep(1000);
@@ -42,8 +45,9 @@ public class ClientWriter implements Runnable {
         System.out.println("\n!!!Authenticated!!!\n");
         while (true){
             String myMessage = stdIn.nextLine();
-            out.println(myMessage);
-            if (myMessage.equals("Command: /quit")){
+            interpreter.setString(myMessage);
+            out.println(interpreter.interpret());
+            if (myMessage.equals("/quit")){
                 System.exit(0);
             }
 
