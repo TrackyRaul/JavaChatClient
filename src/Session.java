@@ -49,7 +49,11 @@ public class Session implements Runnable{
                     if (messageTokens[0].equals("User")) {
                         // Substructure 1
                         // Print message
-                        System.out.println(messageTokens[1].trim() + ": " + messageTokens[2].trim());
+                        String printableMessage = message.substring(5 + messageTokens[1].length() + 1);
+
+                        System.out.println(messageTokens[1].trim() + ": " + printableMessage);
+
+
                     } else if (messageTokens[0].equals("Server")) {
                         // Substructure 2
                         if (messageTokens[1].equals("error")){
