@@ -28,6 +28,18 @@ public class ClientWriter implements Runnable {
 
     @Override
     public void run() {
+        while (!Main.authenticated) {
+            System.out.print("Insert username: ");
+            String tempUsername = stdIn.nextLine();
+            out.println("Head: " + tempUsername.trim());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+        System.out.println("\n!!!Authenticated!!!\n");
         while (true){
             String myMessage = stdIn.nextLine();
             out.println(myMessage);

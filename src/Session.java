@@ -5,18 +5,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Raul Farkas
  */
 public class Session implements Runnable{
     private Socket socket;
+
     public Session(Socket socket){
         this.socket = socket;
     }
+
     
     @Override
     public void run() {
@@ -36,6 +35,7 @@ public class Session implements Runnable{
                 // Debug System.out.println(message);
                 /* Available structures
                     1. 3 elements separated by ":"
+                    2. 2 elements separated by ":"
                 */
 
                 // Structure 1
@@ -59,6 +59,11 @@ public class Session implements Runnable{
                         if (messageTokens[1].equals("error")){
                             System.out.println("Error: " + messageTokens[2].trim());
                         }
+                    }
+                } else if (message.split(":").length == 2) {
+                    String[] messageTokens = message.split(":");
+                    if (messageTokens[0].equals("Head") && messageTokens[1].trim().equals("OK")) {
+                        Main.authenticated = true;
                     }
                 }
             }
