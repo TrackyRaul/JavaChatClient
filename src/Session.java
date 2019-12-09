@@ -33,21 +33,28 @@ public class Session implements Runnable{
             t1.start();
             while (true) {
                 String message = in.readLine();
+                // Debug System.out.println(message);
                 /* Available structures
                     1. 3 elements separated by ":"
                 */
 
                 // Structure 1
-                if (message.split(":").length == 3){
+                if (message.split(":").length >= 3){
                     /* Available substructures
                         1. User:{username}:{message} -> message from users
+                        2. Server:error:{error message} -> error message
                     */
 
-                    // Substructure 1
                     String[] messageTokens = message.split(":");
-                    if(messageTokens[0].equals("User")) {
+                    if (messageTokens[0].equals("User")) {
+                        // Substructure 1
                         // Print message
                         System.out.println(messageTokens[1].trim() + ": " + messageTokens[2].trim());
+                    } else if (messageTokens[0].equals("Server")) {
+                        // Substructure 2
+                        if (messageTokens[1].equals("error")){
+                            System.out.println("Error: " + messageTokens[2].trim());
+                        }
                     }
                 }
             }
