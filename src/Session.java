@@ -33,7 +33,23 @@ public class Session implements Runnable{
             t1.start();
             while (true) {
                 String message = in.readLine();
-                System.out.println(message);
+                /* Available structures
+                    1. 3 elements separated by ":"
+                */
+
+                // Structure 1
+                if (message.split(":").length == 3){
+                    /* Available substructures
+                        1. User:{username}:{message} -> message from users
+                    */
+
+                    // Substructure 1
+                    String[] messageTokens = message.split(":");
+                    if(messageTokens[0].equals("User")) {
+                        // Print message
+                        System.out.println(messageTokens[1].trim() + ": " + messageTokens[2].trim());
+                    }
+                }
             }
         } catch (IOException ex) {
             System.out.println("Error encountered while creating the io streams.");
