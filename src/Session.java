@@ -34,7 +34,6 @@ public class Session implements Runnable{
             while (true) {
                 String message = in.readLine();
                 System.out.println(message);
-
             }
         } catch (IOException ex) {
             System.out.println("Error encountered while creating the io streams.");

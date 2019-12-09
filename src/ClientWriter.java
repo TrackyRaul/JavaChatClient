@@ -29,7 +29,11 @@ public class ClientWriter implements Runnable {
     @Override
     public void run() {
         while (true){
-            out.println(stdIn.nextLine());
+            String myMessage = stdIn.nextLine();
+            out.println(myMessage);
+            if (myMessage.equals("Command: /quit")){
+                System.exit(0);
+            }
 
         }
     }
