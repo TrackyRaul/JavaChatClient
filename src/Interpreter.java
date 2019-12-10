@@ -28,7 +28,7 @@ public class Interpreter {
             }
 
             if (useDefault) {
-                ret = "Command: " + toString();
+                ret = "Command: " + this.string;
             }
 
         } else {
