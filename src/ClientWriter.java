@@ -32,14 +32,16 @@ public class ClientWriter implements Runnable {
     @Override
     public void run() {
         Interpreter interpreter = new Interpreter();
-        // Check if authenticated
+
+
         synchronized (ClientWriter.username.getClass()) {
+            // Check if authenticated
             while (Main.authenticated == false) {
                 try {
                     // Wait for username to be updated
                     ClientWriter.username.getClass().wait();
                     System.out.println(ClientWriter.username);
-                    // Send auth message
+                    // Send auth message and try to log-in
                     out.println("Head: " + ClientWriter.username.trim());
                     try {
                         Thread.sleep(1000);
@@ -53,7 +55,7 @@ public class ClientWriter implements Runnable {
             }
         }
 
-
+        // Update interface message to authenticated!
         Main.registrationFormController.updateLoginStatus("!!!Authenticated!!!");
         while (true){
             String myMessage = stdIn.nextLine();

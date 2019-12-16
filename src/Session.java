@@ -59,6 +59,7 @@ public class Session implements Runnable{
                     } else if (messageTokens[0].equals("Server")) {
                         // Substructure 2
                         if (messageTokens[1].equals("error")){
+                            // Update login status on interface
                             Main.registrationFormController.updateLoginStatus("Error: " + messageTokens[2].trim());
                         } else if (messageTokens[1].equals("updateUsers")) {
                             System.out.println("Users: " + messageTokens[2].trim());

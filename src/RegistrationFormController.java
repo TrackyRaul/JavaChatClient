@@ -36,6 +36,7 @@ public class RegistrationFormController {
     }
 
     public void updateLoginStatus(String text) {
+        // Method to be called externally, it updates label text
         Platform.runLater(() -> {
             this.loginStatus.setText(text);
         });
