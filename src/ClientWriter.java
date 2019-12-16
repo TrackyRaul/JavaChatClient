@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,28 +16,45 @@ public class ClientWriter implements Runnable {
     private Scanner stdIn;
     String userInput;
     PrintWriter out;
+    public static String username = new String();
+
     public ClientWriter(PrintWriter out) {
         this.out = out;
         stdIn = new Scanner(System.in);
     }
+    public static void usernameUpdated() {
+        // Notify that object changed
+        synchronized (ClientWriter.username.getClass()) {
+            ClientWriter.username.getClass().notifyAll();
+        }
 
+    }
     @Override
     public void run() {
         Interpreter interpreter = new Interpreter();
         // Check if authenticated
-        while (!Main.authenticated) {
-            System.out.print("Insert username: ");
-            String tempUsername = stdIn.nextLine();
-            // Send auth message
-            out.println("Head: " + tempUsername.trim());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        synchronized (ClientWriter.username.getClass()) {
+            while (Main.authenticated == false) {
+                try {
+                    // Wait for username to be updated
+                    ClientWriter.username.getClass().wait();
+                    System.out.println(ClientWriter.username);
+                    // Send auth message
+                    out.println("Head: " + ClientWriter.username.trim());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        System.out.println("\n!!!Authenticated!!!\n");
+
+
+        Main.registrationFormController.updateLoginStatus("!!!Authenticated!!!");
         while (true){
             String myMessage = stdIn.nextLine();
             interpreter.setString(myMessage);

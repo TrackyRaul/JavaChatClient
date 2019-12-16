@@ -11,6 +11,7 @@ import java.net.Socket;
  */
 public class Session implements Runnable{
     private Socket socket;
+    public static String loginStatus = "";
 
     public Session(Socket socket){
         this.socket = socket;
@@ -58,7 +59,7 @@ public class Session implements Runnable{
                     } else if (messageTokens[0].equals("Server")) {
                         // Substructure 2
                         if (messageTokens[1].equals("error")){
-                            System.out.println("Error: " + messageTokens[2].trim());
+                            Main.registrationFormController.updateLoginStatus("Error: " + messageTokens[2].trim());
                         } else if (messageTokens[1].equals("updateUsers")) {
                             System.out.println("Users: " + messageTokens[2].trim());
                         }
