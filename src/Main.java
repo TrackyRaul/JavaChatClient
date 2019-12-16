@@ -1,8 +1,17 @@
 import java.net.Socket;
-
-public class Main {
+/*
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+*/
+public class Main /*extends Application*/{
     public static boolean authenticated = false;
+
     public static void main(String[] args) {
+        //launch(args);
+
         try {
             // Socket creation
             Socket socket = new Socket("localhost", 3333);
@@ -16,4 +25,13 @@ public class Main {
             System.exit(1);
         }
     }
+/*
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("./registration_form.fxml"));
+        primaryStage.setTitle("Registration Form FXML Application");
+        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.show();
+    }
+*/
 }

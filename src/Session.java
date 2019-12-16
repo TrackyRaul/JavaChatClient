@@ -43,6 +43,7 @@ public class Session implements Runnable{
                     /* Available substructures
                         1. User:{username}:{message} -> message from users
                         2. Server:error:{error message} -> error message
+                        3. Server:updateUser:{users} -> connected users list
                     */
 
                     String[] messageTokens = message.split(":");
@@ -58,6 +59,8 @@ public class Session implements Runnable{
                         // Substructure 2
                         if (messageTokens[1].equals("error")){
                             System.out.println("Error: " + messageTokens[2].trim());
+                        } else if (messageTokens[1].equals("updateUsers")) {
+                            System.out.println("Users: " + messageTokens[2].trim());
                         }
                     }
                 } else if (message.split(":").length == 2) {
