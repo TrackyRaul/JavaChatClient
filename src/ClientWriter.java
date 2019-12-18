@@ -17,6 +17,7 @@ public class ClientWriter implements Runnable {
     String userInput;
     PrintWriter out;
     public static String username = new String();
+    public static String message = "";
 
     public ClientWriter(PrintWriter out) {
         this.out = out;
@@ -27,8 +28,15 @@ public class ClientWriter implements Runnable {
         synchronized (ClientWriter.username.getClass()) {
             ClientWriter.username.getClass().notifyAll();
         }
-
     }
+
+    public static void sendMessage() {
+        // Notify that object changed
+        synchronized (ClientWriter.message.getClass()) {
+            ClientWriter.message.getClass().notifyAll();
+        }
+    }
+
     @Override
     public void run() {
         Interpreter interpreter = new Interpreter();
@@ -67,14 +75,22 @@ public class ClientWriter implements Runnable {
         Main.screenController.activate("Chat");
 
         // Only valid for cli version
-        while (true){
-            String myMessage = stdIn.nextLine();
-            interpreter.setString(myMessage);
-            out.println(interpreter.interpret());
-            if (myMessage.equals("/quit")){
-                System.exit(0);
-            }
+        synchronized (message.getClass()) {
+            while (true) {
+                try {
+                    message.getClass().wait();
+                    System.out.println(message);
+                    interpreter.setString(message);
+                    out.println(interpreter.interpret());
+                    if (message.equals("/quit")) {
+                        System.exit(0);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+
+            }
         }
     }
 }

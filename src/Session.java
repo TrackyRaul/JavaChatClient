@@ -56,7 +56,7 @@ public class Session implements Runnable{
                         // Print message
                         String printableMessage = message.substring(5 + messageTokens[1].length() + 1);
 
-                        System.out.println(messageTokens[1].trim() + ": " + printableMessage);
+                        Main.chatController.addMessage(messageTokens[1].trim() + ": " + printableMessage);
 
 
                     } else if (messageTokens[0].equals("Server")) {
