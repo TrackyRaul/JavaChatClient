@@ -25,9 +25,11 @@ public class RegistrationFormController {
     @FXML
     private void login()
     {
-        ClientWriter.username = usernameField.getText();
-        ClientWriter.usernameUpdated();
-        //System.out.println(ClientWriter.username);
+        if (!usernameField.getText().equals("")) {
+            ClientWriter.username = usernameField.getText();
+            ClientWriter.usernameUpdated();
+            //System.out.println(ClientWriter.username);
+        }
     }
 
     public void updateLoginStatus(String text) {

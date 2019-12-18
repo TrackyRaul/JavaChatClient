@@ -1,3 +1,5 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -10,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -32,15 +36,21 @@ public class ChatController {
     @FXML
     private ScrollPane scrollPane;
 
+    @FXML
+    private Text chattingWith;
+
     private ArrayList<TextArea> messages = new ArrayList<>();
 
     @FXML
-    void initialize() {
+    void initialize() throws FileNotFoundException {
         assert usersList != null : "fx:id=\"usersList\" was not injected: check your FXML file 'Chat.fxml'.";
         loadUsersButtons(new ArrayList<String>());
         Main.chatController = this;
         sendButton.requestFocus();
         scrollPane.vvalueProperty().bind(messagesView.heightProperty());
+        FileInputStream input = new FileInputStream("src\\send.png");
+        Image img = new Image(input);
+        sendButton.setGraphic(new ImageView(img));
 
     }
 
@@ -65,6 +75,8 @@ public class ChatController {
         messagesView.getChildren().clear();
         for (TextArea a : this.messages) {
             a.setPrefSize(500,18);
+            a.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            a.getStyleClass().add("message-text");
             a.editableProperty().setValue(false);
             messagesView.getChildren().add(a);
 
@@ -77,29 +89,37 @@ public class ChatController {
             // All button
             Button allButton = new Button("All");
             allButton.setPrefSize(200, 30);
+            allButton.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            allButton.getStyleClass().add("user-button");
             allButton.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     ClientWriter.message = "/dest broadcast";
                     ClientWriter.sendMessage();
+                    chattingWith.setText("Users: All");
 
                 }
             });
             usersList.getChildren().add(allButton);
 
             for (String s : users) {
-                Button b = new Button(s);
-                b.setOnAction(new EventHandler<ActionEvent>(){
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        String name = s;
-                        ClientWriter.message = "/dest " + name;
-                        ClientWriter.sendMessage();
+                if (!s.equals(ClientWriter.username)) {
+                    Button b = new Button(s);
+                    b.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                    b.getStyleClass().add("user-button");
+                    b.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            chattingWith.setText("User: " + s);
+                            String name = s;
+                            ClientWriter.message = "/dest " + name;
+                            ClientWriter.sendMessage();
+                        }
+                    });
 
-                    }
-                });
-                b.setPrefSize(200, 30);
-                usersList.getChildren().add(b);
+                    b.setPrefSize(200, 30);
+                    usersList.getChildren().add(b);
+                }
             }
 
 

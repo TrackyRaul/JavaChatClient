@@ -69,10 +69,18 @@ public class ClientWriter implements Runnable {
         // Change screen, go to chat
         Main.screenController.activate("Chat");
 
+        boolean firstTime = true;
+
         // Only valid for cli version
         synchronized (message.getClass()) {
             while (true) {
                 try {
+                    if (firstTime) {
+                        interpreter.setString("/dest broadcast");
+                        out.println(interpreter.interpret());
+                        firstTime = false;
+                        continue;
+                    }
                     message.getClass().wait();
                     System.out.println(message);
                     interpreter.setString(message);
