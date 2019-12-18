@@ -5,6 +5,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *
  * @author Raul Farkas
@@ -62,6 +65,8 @@ public class Session implements Runnable{
                             // Update login status on interface
                             Main.registrationFormController.updateLoginStatus("Error: " + messageTokens[2].trim());
                         } else if (messageTokens[1].equals("updateUsers")) {
+                            ArrayList<String> users = new ArrayList<>(Arrays.asList(messageTokens[2].strip().split(",")));
+                            Main.chatController.loadUsersButtons(users);
                             System.out.println("Users: " + messageTokens[2].trim());
                         }
                     }

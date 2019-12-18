@@ -1,4 +1,5 @@
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -11,7 +12,9 @@ import javafx.stage.WindowEvent;
 public class Main extends Application{
     public static boolean authenticated = false;
     public static RegistrationFormController registrationFormController;
+    public static ChatController chatController;
     public static ScreenController screenController;
+    public static ArrayList<String> onlineUsers = new ArrayList<String>();
 
     public static void main(String[] args) {
         try {
@@ -35,6 +38,7 @@ public class Main extends Application{
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 700, 500);
         screenController = new ScreenController(scene);
+        screenController.addScreen("RegistrationForm", FXMLLoader.load(getClass().getResource("RegistrationForm.fxml")));
 
         // Add screens
         screenController.addScreen("Chat", FXMLLoader.load(getClass().getResource("Chat.fxml")));
