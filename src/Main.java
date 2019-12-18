@@ -11,9 +11,9 @@ import javafx.stage.WindowEvent;
 public class Main extends Application{
     public static boolean authenticated = false;
     public static RegistrationFormController registrationFormController;
+    public static ScreenController screenController;
+
     public static void main(String[] args) {
-
-
         try {
             // Socket creation
             Socket socket = new Socket("localhost", 3333);
@@ -33,7 +33,13 @@ public class Main extends Application{
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegistrationForm.fxml"));
         Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root, 700, 500);
+        screenController = new ScreenController(scene);
+
+        // Add screens
+        screenController.addScreen("Chat", FXMLLoader.load(getClass().getResource("Chat.fxml")));
         Main.registrationFormController = (RegistrationFormController) fxmlLoader.getController();
+
         primaryStage.setTitle("Registration Form FXML Application");
 
         // What happens when windows closes
@@ -43,7 +49,7 @@ public class Main extends Application{
             }
         });
 
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
 

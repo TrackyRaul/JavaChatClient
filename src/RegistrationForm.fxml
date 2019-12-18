@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RegistrationFormController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500" prefWidth="700" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="RegistrationFormController">
    <children>
-      <AnchorPane prefHeight="476.0" prefWidth="600.0">
+      <AnchorPane prefHeight="606.0" prefWidth="700.0">
          <children>
-            <Button fx:id="loginButton" layoutX="277.0" layoutY="237.0" mnemonicParsing="false" onAction="#login" text="Login" />
-            <TextField fx:id="usernameField" layoutX="226.0" layoutY="188.0" />
-            <Label layoutX="273.0" layoutY="157.0" text="Username" />
-            <Label fx:id="loginStatus" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="200.0" layoutY="285.0" prefHeight="81.0" prefWidth="200.0" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="loginButton" layoutX="327.0" layoutY="225.0" mnemonicParsing="false" onAction="#login" text="Login" />
+            <TextField fx:id="usernameField" layoutX="276.0" layoutY="176.0" />
+            <Label layoutX="323.0" layoutY="145.0" text="Username" />
+            <Label fx:id="loginStatus" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="250.0" layoutY="273.0" prefHeight="81.0" prefWidth="200.0" textAlignment="CENTER" wrapText="true" />
          </children>
       </AnchorPane>
    </children>
