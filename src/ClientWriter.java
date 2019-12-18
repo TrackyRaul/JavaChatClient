@@ -66,12 +66,7 @@ public class ClientWriter implements Runnable {
         // Update interface message to authenticated!
         Main.registrationFormController.updateLoginStatus("!!!Authenticated!!!");
 
-        // Wait two seconds and change screen, go to chat
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Change screen, go to chat
         Main.screenController.activate("Chat");
 
         // Only valid for cli version
