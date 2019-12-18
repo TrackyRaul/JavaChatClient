@@ -1,10 +1,12 @@
 import java.net.Socket;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application{
     public static boolean authenticated = false;
@@ -33,6 +35,14 @@ public class Main extends Application{
         Parent root = fxmlLoader.load();
         Main.registrationFormController = (RegistrationFormController) fxmlLoader.getController();
         primaryStage.setTitle("Registration Form FXML Application");
+
+        // What happens when windows closes
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent t) {
+                System.exit(0);
+            }
+        });
+
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.setResizable(false);
         primaryStage.show();
