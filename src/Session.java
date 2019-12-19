@@ -5,12 +5,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *
  * @author Raul Farkas
  */
 public class Session implements Runnable{
     private Socket socket;
+    public static String loginStatus = "";
 
     public Session(Socket socket){
         this.socket = socket;
@@ -43,6 +47,7 @@ public class Session implements Runnable{
                     /* Available substructures
                         1. User:{username}:{message} -> message from users
                         2. Server:error:{error message} -> error message
+                        3. Server:updateUser:{users} -> connected users list
                     */
 
                     String[] messageTokens = message.split(":");
@@ -50,14 +55,28 @@ public class Session implements Runnable{
                         // Substructure 1
                         // Print message
                         String printableMessage = message.substring(5 + messageTokens[1].length() + 1);
+                        // Check if message dest is broadcast
+                        if (messageTokens[1].contains("(broadcast)")) {
+                            // Set the channel to all
+                            Main.chatController.addMessage(messageTokens[1].trim() + ": " + printableMessage, "All");
 
-                        System.out.println(messageTokens[1].trim() + ": " + printableMessage);
+                        } else {
+                            Main.chatController.addMessage(messageTokens[1].trim() + ": " + printableMessage, messageTokens[1]);
+                        }
+
+
+
 
 
                     } else if (messageTokens[0].equals("Server")) {
                         // Substructure 2
                         if (messageTokens[1].equals("error")){
-                            System.out.println("Error: " + messageTokens[2].trim());
+                            // Update login status on interface
+                            Main.registrationFormController.updateLoginStatus("Error: " + messageTokens[2].trim());
+                        } else if (messageTokens[1].equals("updateUsers")) {
+                            ArrayList<String> users = new ArrayList<>(Arrays.asList(messageTokens[2].strip().split(",")));
+                            Main.chatController.loadUsersButtons(users);
+                            System.out.println("Users: " + messageTokens[2].trim());
                         }
                     }
                 } else if (message.split(":").length == 2) {
