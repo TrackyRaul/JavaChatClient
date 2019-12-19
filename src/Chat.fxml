@@ -22,14 +22,7 @@
       <RowConstraints maxHeight="487.79999389648435" minHeight="10.0" prefHeight="461.20000610351565" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <VBox id="users-vbox" fx:id="usersList" maxWidth="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@style.css" GridPane.rowIndex="1">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: white;" text="Button">
-               <font>
-                  <Font name="Calibri" size="18.0" />
-               </font>
-            </Button>
-         </children></VBox>
+      <VBox id="users-vbox" fx:id="usersList" maxWidth="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@style.css" GridPane.rowIndex="1" />
       <GridPane prefHeight="434.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

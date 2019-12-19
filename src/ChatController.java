@@ -66,7 +66,7 @@ public class ChatController {
                 // If conversation is equal to current dest add to messages
                 if (conversation.getUser().equals(ClientWriter.dest)) {
                     TextArea ta = new TextArea(ClientWriter.username + ": " + ClientWriter.message);
-                    // Set sent text with right to left orientationg
+                    // Set sent text with right to left orientation
                     ta.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
                     conversation.getMessages().add(ta);
                     break;
