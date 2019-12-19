@@ -42,7 +42,7 @@
                <children>
                   <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="413.0" prefWidth="500.0" vvalue="1.0">
                      <content>
-                        <VBox fx:id="messagesView" alignment="BOTTOM_CENTER" prefHeight="455.0" prefWidth="500.0" />
+                        <VBox fx:id="messagesView" alignment="BOTTOM_CENTER" prefHeight="455.0" prefWidth="485.0" />
                      </content>
                   </ScrollPane>
                   <Pane prefHeight="50.0" prefWidth="513.0">

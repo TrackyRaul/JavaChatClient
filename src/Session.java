@@ -55,8 +55,17 @@ public class Session implements Runnable{
                         // Substructure 1
                         // Print message
                         String printableMessage = message.substring(5 + messageTokens[1].length() + 1);
+                        // Check if message dest is broadcast
+                        if (messageTokens[1].contains("(broadcast)")) {
+                            // Set the channel to all
+                            Main.chatController.addMessage(messageTokens[1].trim() + ": " + printableMessage, "All");
 
-                        Main.chatController.addMessage(messageTokens[1].trim() + ": " + printableMessage);
+                        } else {
+                            Main.chatController.addMessage(messageTokens[1].trim() + ": " + printableMessage, messageTokens[1]);
+                        }
+
+
+
 
 
                     } else if (messageTokens[0].equals("Server")) {

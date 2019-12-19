@@ -18,6 +18,7 @@ public class ClientWriter implements Runnable {
     PrintWriter out;
     public static String username = new String();
     public static String message = "";
+    public static String dest = "All";
 
     public ClientWriter(PrintWriter out) {
         this.out = out;

@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -41,6 +42,8 @@ public class ChatController {
 
     private ArrayList<TextArea> messages = new ArrayList<>();
 
+    private ArrayList<Conversation> conversations = new ArrayList<>();
+
     @FXML
     void initialize() throws FileNotFoundException {
         assert usersList != null : "fx:id=\"usersList\" was not injected: check your FXML file 'Chat.fxml'.";
@@ -58,29 +61,63 @@ public class ChatController {
         if (!messageInput.getText().equals("")) {
             ClientWriter.message = messageInput.getText();
             ClientWriter.sendMessage();
-            messages.add(new TextArea(ClientWriter.username + ": " + ClientWriter.message));
+            // Update messages in conversation, by adding sent message
+            for (Conversation conversation : conversations) {
+                // If conversation is equal to current dest add to messages
+                if (conversation.getUser().equals(ClientWriter.dest)) {
+                    TextArea ta = new TextArea(ClientWriter.username + ": " + ClientWriter.message);
+                    // Set sent text with right to left orientationg
+                    ta.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+                    conversation.getMessages().add(ta);
+                    break;
+                }
+            }
+            // Update messages shown on screen
             updateMessages();
             messageInput.clear();
         }
     }
 
-    public void addMessage(String message) {
+    public void addMessage(String message, String username) {
         Platform.runLater(() -> {
-            messages.add(new TextArea(message));
-            updateMessages();
+            // Add received message to specific conversation
+            for (Conversation conversation : conversations) {
+                if (conversation.getUser().equals(username)) {
+                    conversation.getMessages().add(new TextArea(message));
+                    if (ClientWriter.dest.equals(conversation.getUser())) {
+                        /*  If you are currently talking to the person
+                            you are receiving the message from update
+                            shown messages on screen
+
+                        */
+                        updateMessages();
+
+                    }
+                    break;
+                }
+            }
         });
     }
 
     public void updateMessages() {
         messagesView.getChildren().clear();
-        for (TextArea a : this.messages) {
-            a.setPrefSize(500,18);
-            a.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-            a.getStyleClass().add("message-text");
-            a.editableProperty().setValue(false);
-            messagesView.getChildren().add(a);
+        // Consider each conversation
+        for (Conversation conversation : this.conversations) {
+            // If the conversation equals to the one you are in
+            if (conversation.getUser().equals(ClientWriter.dest)) {
+                // Display conversation messages
+                for (TextArea a : conversation.getMessages()) {
+                    a.setPrefSize(500,18);
+                    a.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                    a.getStyleClass().add("message-text");
+                    a.editableProperty().setValue(false);
+                    messagesView.getChildren().add(a);
 
+                }
+                break;
+            }
         }
+
     }
 
     public void loadUsersButtons(ArrayList<String> users) {
@@ -88,6 +125,7 @@ public class ChatController {
             usersList.getChildren().clear();
             // All button
             Button allButton = new Button("All");
+            conversations.add(new Conversation("All"));
             allButton.setPrefSize(200, 30);
             allButton.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             allButton.getStyleClass().add("user-button");
@@ -96,6 +134,9 @@ public class ChatController {
                 public void handle(ActionEvent actionEvent) {
                     ClientWriter.message = "/dest broadcast";
                     ClientWriter.sendMessage();
+                    ClientWriter.dest = "All";
+                    // Switch displayed conversations
+                    updateMessages();
                     chattingWith.setText("Users: All");
 
                 }
@@ -105,6 +146,7 @@ public class ChatController {
             for (String s : users) {
                 if (!s.equals(ClientWriter.username)) {
                     Button b = new Button(s);
+                    conversations.add(new Conversation(s));
                     b.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
                     b.getStyleClass().add("user-button");
                     b.setOnAction(new EventHandler<ActionEvent>() {
@@ -112,6 +154,9 @@ public class ChatController {
                         public void handle(ActionEvent actionEvent) {
                             chattingWith.setText("User: " + s);
                             String name = s;
+                            ClientWriter.dest = s;
+                            // Switch displayed conversation
+                            updateMessages();
                             ClientWriter.message = "/dest " + name;
                             ClientWriter.sendMessage();
                         }
@@ -121,9 +166,6 @@ public class ChatController {
                     usersList.getChildren().add(b);
                 }
             }
-
-
-
         });
 
     }
